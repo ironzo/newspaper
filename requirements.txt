@@ -1,3 +1,5 @@
 pycups
 requests
 bs4
+logging
+dotenv

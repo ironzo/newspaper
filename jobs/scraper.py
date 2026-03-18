@@ -2,6 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, timezone
 import time
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def get_24h_posts(channel_username):
     base_url = f"https://t.me/s/{channel_username}"
@@ -67,7 +70,19 @@ def get_24h_posts(channel_username):
     return all_posts
 
 if __name__ == "__main__":
-    posts = get_24h_posts("LACHENTYT")
-    print(f"Found {len(posts)} posts")
-    for p in posts:
-        print(f"[{p['date']}] {p['text'][:100]}...")
+    all_posts = []
+    with open(os.path.join(BASE_DIR, "telegram_channels.md"), "r", encoding="utf-8") as f:
+        channels = f.readlines()
+    for channel in channels:
+        channel_posts = f"## Channel Name: {channel}\n"
+        channel = channel.strip()
+        if channel:
+            posts = get_24h_posts(channel)
+            print(f"Found {len(posts)} posts for {channel}")
+            for p in posts:
+                channel_posts += f"### [{p['date']}] {p['text']}\n"
+                print(f"[{p['date']}] {p['text'][:100]}...")
+        all_posts.append(channel_posts)
+    with open(os.path.join(BASE_DIR, "temp_storage", "raw_news.md"), "w", encoding="utf-8") as f:
+        f.write("\n".join(all_posts))
+    
