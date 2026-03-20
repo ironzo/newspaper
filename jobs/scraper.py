@@ -69,7 +69,7 @@ def get_24h_posts(channel_username):
     all_posts = sorted(all_posts, key=lambda x: x['date'], reverse=True)
     return all_posts
 
-if __name__ == "__main__":
+def scrape_news():
     all_posts = []
     with open(os.path.join(BASE_DIR, "telegram_channels.md"), "r", encoding="utf-8") as f:
         channels = f.readlines()
@@ -84,5 +84,4 @@ if __name__ == "__main__":
                 print(f"[{p['date']}] {p['text'][:100]}...")
         all_posts.append(channel_posts)
     with open(os.path.join(BASE_DIR, "temp_storage", "raw_news.md"), "w", encoding="utf-8") as f:
-        f.write("\n".join(all_posts))
-    
+        f.write("\n".join(all_posts)) 

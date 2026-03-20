@@ -3,7 +3,7 @@ import logging
 from agent.invoke import Agent
 from jobs.cleaner import clean_temp_files
 from jobs.printer import print_paper
-from jobs.scraper import get_24h_posts
+from jobs.scraper import scrape_news
 logging.basicConfig(level=logging.INFO)
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     clean_temp_files()
 
     # Scrape news
-    get_24h_posts()
+    scrape_news()
 
     # Print paper
     print_paper()
