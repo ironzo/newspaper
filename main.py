@@ -23,10 +23,6 @@ if __name__ == "__main__":
 
     # Scrape news
     scrape_news()
-
-    # Print paper
-    print_paper()
-
     # Run the workflow
     if MODE == "streamline":
         from pipeline.run import run
@@ -45,3 +41,6 @@ if __name__ == "__main__":
         print(response)
     else:
         raise ValueError(f"Unknown MODE: '{MODE}'. Use 'streamline' or 'agent'.")
+
+    # Print paper
+    print_paper()
