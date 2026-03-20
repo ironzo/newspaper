@@ -22,12 +22,14 @@ run_agent_tool = {
     }
 }
 
-def run_agent(prompt: str, save_to: str, system_prompt: str = "", tools: list[str] = ["check_file"], force_tool: str = None) -> str:
+def run_agent(prompt: str, system_prompt: str = "", save_to: str = None, tools: list[str] = ["check_file"], force_tool: str = None) -> str:
     print(f"Called agent with prompt: {prompt}, system_prompt: {system_prompt}, tools: {tools}, force_tool: {force_tool}")
     from main import agent
     response = agent.invoke(prompt, system_prompt, tools, force_tool)
-    save_to = save_to.lstrip("/")
-    path = os.path.join(ROOT_DIR, save_to)
-    with open(path, "a", encoding="utf-8") as f:
-        f.write(response + "\n")
-    return f"The response is saved to {save_to}"
+    if save_to:
+        save_to = save_to.lstrip("/")
+        path = os.path.join(ROOT_DIR, save_to)
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(response + "\n")
+        return f"The response is saved to {save_to}"
+    return response

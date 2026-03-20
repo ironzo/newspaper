@@ -1,4 +1,6 @@
+import os
 import json
+import time
 import requests
 import logging
 from typing import Optional
@@ -12,10 +14,20 @@ logger = logging.getLogger(__name__)
 
 
 class Agent:
-    def __init__(self, model: str ,  base_url: str, api_key: Optional[str] = None):
+    def __init__(self, model: str, base_url: str, api_key: Optional[str] = None):
         self.model = model
         self.base_url = base_url
         self.api_key = api_key
+        self.total_prompt_tokens = 0
+        self.total_completion_tokens = 0
+
+    @property
+    def cost_usd(self) -> float:
+        input_price  = float(os.getenv("MODEL_INPUT_PRICE_PER_1M",  "0"))
+        output_price = float(os.getenv("MODEL_OUTPUT_PRICE_PER_1M", "0"))
+        return (self.total_prompt_tokens     / 1_000_000) * input_price \
+             + (self.total_completion_tokens / 1_000_000) * output_price
+
     def invoke(self, prompt: str, system_prompt: str = "", tools: list[str] = [], force_tool: str = None) -> str:
         try:
             msgs = [
@@ -36,13 +48,23 @@ class Agent:
                     if force_tool:
                         payload["tool_choice"] = {"type": "function", "function": {"name": force_tool}}
 
-                response = requests.post(
-                    f"{self.base_url}/v1/chat/completions",
-                    json=payload,
-                    headers=headers
-                )
+                for attempt in range(1, 4):
+                    response = requests.post(
+                        f"{self.base_url}/v1/chat/completions",
+                        json=payload,
+                        headers=headers,
+                        timeout=120,
+                    )
+                    if response.status_code < 500:
+                        break
+                    logger.warning(f"Server error {response.status_code}, retry {attempt}/3 in {attempt * 5}s...")
+                    time.sleep(attempt * 5)
                 response.raise_for_status()
-                message = response.json()["choices"][0]["message"]
+                body = response.json()
+                usage = body.get("usage", {})
+                self.total_prompt_tokens     += usage.get("prompt_tokens", 0)
+                self.total_completion_tokens += usage.get("completion_tokens", 0)
+                message = body["choices"][0]["message"]
 
                 tool_calls = message.get("tool_calls")
                 if not tool_calls:

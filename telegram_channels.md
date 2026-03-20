@@ -1,2 +1,7 @@
 LACHENTYT
 data_analysis_ml
+budalive
+eventsbudapest
+tripandme
+ai_machinelearning_big_data
+E_Lytsar
