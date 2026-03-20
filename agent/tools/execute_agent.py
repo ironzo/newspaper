@@ -17,15 +17,14 @@ run_agent_tool = {
                 "tools": { "type": "array", "items": { "type": "string" } },
                 "force_tool": { "type": "string" }
             },
-            "required": ["prompt", "save_to"]
+            "required": ["prompt", "system_prompt", "save_to"]
         }
     }
 }
 
-def run_agent(prompt: str, system_prompt: str, save_to: str, tools: list[str] = [], force_tool: str = None) -> str:
-    from agent.invoke import Agent
-    agent = Agent()
-    print(f"Called agent.")
+def run_agent(prompt: str, save_to: str, system_prompt: str = "", tools: list[str] = ["check_file"], force_tool: str = None) -> str:
+    print(f"Called agent with prompt: {prompt}, system_prompt: {system_prompt}, tools: {tools}, force_tool: {force_tool}")
+    from main import agent
     response = agent.invoke(prompt, system_prompt, tools, force_tool)
     save_to = save_to.lstrip("/")
     path = os.path.join(ROOT_DIR, save_to)

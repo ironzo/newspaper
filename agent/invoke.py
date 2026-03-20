@@ -1,6 +1,7 @@
 import json
 import requests
 import logging
+from typing import Optional
 from dotenv import load_dotenv
 from .tools.tools_mapping import tools_schemas_map, tools_functions_map
 
@@ -9,21 +10,24 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-BASE_URL = "http://127.0.0.1:11434"
-MODEL = "qwen2.5:7b"
 
 class Agent:
-    def __init__(self, model: str = MODEL):
+    def __init__(self, model: str ,  base_url: str, api_key: Optional[str] = None):
         self.model = model
-        self.base_url = BASE_URL
-
-    def invoke(self, prompt: str, system_prompt: str, tools: list[str] = [], force_tool: str = None) -> str:
+        self.base_url = base_url
+        self.api_key = api_key
+    def invoke(self, prompt: str, system_prompt: str = "", tools: list[str] = [], force_tool: str = None) -> str:
         try:
             msgs = [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt}
             ]
             tools_list = [tools_schemas_map[t] for t in tools] if tools else []
+
+            if self.api_key:
+                headers = {"Content-Type": "application/json", "Authorization": f"Bearer {self.api_key}"}
+            else:
+                headers = {"Content-Type": "application/json"}
 
             while True:
                 payload = {"model": self.model, "messages": msgs}
@@ -35,7 +39,7 @@ class Agent:
                 response = requests.post(
                     f"{self.base_url}/v1/chat/completions",
                     json=payload,
-                    headers={"Content-Type": "application/json"}
+                    headers=headers
                 )
                 response.raise_for_status()
                 message = response.json()["choices"][0]["message"]

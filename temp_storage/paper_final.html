@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Morning Paper — temp_storage summarised_paper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* Old-paper newspaper aesthetic */
+    :root{
+      --paper-bg: #f6edd6;
+      --paper-border: #b79a60;
+      --ink: #1a1a1a;
+      --section-rule: #c09b3a;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #f5f0e0;
+      /* Subtle parchment texture via layered gradients */
+      background-image:
+        linear-gradient(0deg, rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+      background-size: 24px 24px, 24px 24px;
+      color: var(--ink);
+      font-family: "Times New Roman", Times, serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .paper {
+      max-width: 1080px;
+      margin: 48px auto;
+      padding: 28px 34px;
+      background: linear-gradient(#f7f0d9, #f6f0d0);
+      border: 1px solid var(--paper-border);
+      border-radius: 6px;
+      box-shadow: 0 0 0 6px rgba(183, 158, 96, 0.08);
+      position: relative;
+    }
+
+    /* Decorative border accents (top and bottom) */
+    .paper:before,
+    .paper:after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      height: 8px;
+      background: repeating-linear-gradient(
+        to right,
+        rgba(156, 118, 22, 0.25),
+        rgba(156, 118, 22, 0.25) 8px,
+        transparent 8px,
+        transparent 16px
+      );
+      opacity: 0.6;
+    }
+    .paper:before { top: 0; }
+    .paper:after  { bottom: 0; }
+
+    header.masthead {
+      text-align: center;
+      margin-bottom: 18px;
+      padding: 6px 0 14px;
+      border-bottom: 2px solid #c9b487;
+    }
+
+    header.masthead h1 {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 2.2em;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    header.masthead .subtitle {
+      font-family: "Garamond", "Times New Roman", serif;
+      font-size: 0.95em;
+      color: #5a533b;
+      opacity: 0.9;
+      margin: 6px 0 0;
+    }
+
+    /* Two-column newspaper layout */
+    .content {
+      column-count: 2;
+      column-gap: 40px;
+      column-fill: balance;
+    }
+
+    section {
+      break-inside: avoid;
+      margin: 0 0 16px 0;
+    }
+
+    section h2 {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 1.4em;
+      color: #2b2b2b;
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--section-rule);
+      position: relative;
+    }
+
+    /* Subtle decorative line to mimic old separators */
+    section h2:after {
+      content: "";
+      display: block;
+      height: 3px;
+      width: 60px;
+      background: linear-gradient(to right, transparent, #b58c2d, transparent);
+      margin-top: 6px;
+      border-radius: 2px;
+    }
+
+    .story {
+      font-size: 0.98em;
+      line-height: 1.45;
+      margin: 0 0 10px 0;
+      text-wrap: balance;
+    }
+
+    /* Make long blocks readable on narrow screens */
+    @media (max-width: 1000px) {
+      .paper { margin: 20px; padding: 20px; }
+      .content { column-count: 1; }
+    }
+
+    /* tiny print-friendly adjustments for print media */
+    @media print {
+      html, body { background: #fff; }
+      .paper { box-shadow: none; border: none; margin: 0; padding: 0; width: auto; }
+      .content { column-count: 2; column-gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="paper" aria-label="Morning paper">
+    <header class="masthead">
+      <h1>Morning Paper</h1>
+      <div class="subtitle">temp_storage/summarized_paper.md</div>
+    </header>
+
+    <div class="content">
+      <section>
+        <h2>Ukraine – Politics and Hot News</h2>
+        <p class="story">- 1) 2026-03-18 17:43:17+00:00: «Під час останньої повітряної тривоги у Голосіївському районі Києва було зафіксовано падіння уламків БпЛА на дах нежиттлової будівлі. Обійшлося без пожежі та постраждалих», — начальник КМВА Ткаченко.</p>
+        <p class="story">- 2) 2026-03-18 10:34:05+00:00: Кешбек на пальне запустять з 20 березня, – Forbes У програмі братимуть участь мережі АЗС, які зареєстровані в «Національному кешбеку».</p>
+        <p class="story">- 3) 2026-03-18 10:55:37+00:00: РФ атакувала приміщення ТЦК у Сумах. Відомо про двох поранених, серед них — підліток. У момент влучання в будівлі були люди.</p>
+        <p class="story">- 4) 2026-03-18 08:52:06+00:00: Поліція ліквідувала мережу кол-центрів, які ошукували громадян ЄС, видаючи себе за латвійських поліцейських й отримували доступ до онлайн-банкінгу жертв. Постраждали щонайменше 20 громадян Латвії на суму близько 15 млн грн.</p>
+      </section>
+
+      <section>
+        <h2>Economics news</h2>
+        <p class="story">- 1) 2026-03-18 16:34:09+00:00: Кешбек на пальне запустять з 20 березня, – Forbes У програмі братимуть участь мережі АЗС, які зареєстровані в «Національному кешбеку».</p>
+        <p class="story">- 2) 2026-03-18 15:28:35+00:00: В 2023-му СБУ викрили схему на 34 лями з тим шо гроші на рекламу в інеті виводили на левих фопів   Буквально в тому ж 23-му команда Філатова вїбала 35 мільйонів на саморекламу в пабліках і медіа  В 2024-му Дніпро витратило 51 млн на рекламу, це була найбільша…</p>
+        <p class="story">- 3) 2026-03-18 13:00:27+00:00: Завтра в Україні переважатиме холодна погода. У Києві очікується невеликий дощ, вночі місцями з мокрим снігом, — синоптик Діденко.</p>
+        <p class="story">- 4) 2026-03-18 12:20:31+00:00: Я здаюсь, Боря переміг мене у війні замовних заголовків на адмін ресурсах. Тут вже не можу нічого відповісти, Дніпро підтримав свого мера…  Знахабнілий блогер напав на бідненького Бориса, який тихенько займається містом</p>
+      </section>
+
+      <section>
+        <h2>DataSciense News -> AI Engineering</h2>
+        <p class="story">- [2026-03-18 17:55:01+00:00] Max @data_analysis_ml<br/>
+          ⚡️<br/>
+          Вышла новая модель <br/>
+          Minimax M2.7<br/>
+          и релиз получился очень мощным.<br/>
+          Что интересного:<br/>
+          • <br/>
+          🧠<br/>
+          <br/>
+          Self-evolving модель<br/>
+          <br/>
+          M2.7 — одна из первых моделей, которая <br/>
+          помогаютa улучшать саму себя<br/>
+          .<br/>
+          <br/>
+          Во время RL-обучения она запускала <br/>
+          100+ автономных циклов оптимизации<br/>
+          , что дало около <br/>
+          30% внутреннего улучшения<br/>
+          .  <br/>
+          • <br/>
+          💻<br/>
+           Крутые результаты в кодинге  <br/>
+          — <br/>
+          56.2% на SWE-Pro <br/>
+           (почти уровень Claude Opus 4.6)  <br/>
+          — <br/>
+          55.6% на VIBE-Pro<br/>
+          <br/>
+          — может находить и исправлять production-баги <br/>
+          менее чем за 3 минуты<br/>
+          • <br/>
+          🔬<br/>
+          <br/>
+          Агент для ML-исследований<br/>
+          <br/>
+          — <br/>
+          66.6% medal rate на MLE Bench Lite<br/>
+          <br/>
+          — фактически на уровне <br/>
+          Gemini 3.1<br/>
+          в задачах ML-исследований.<br/>
+          • <br/>
+          📊<br/>
+          <br/>
+          А офисная и аналитическая работа<br/>
+          <br/>
+          — <br/>
+          ELO 1495 на GDPval-AA<br/>
+           (лучший open-source результат)  <br/>
+          — <br/>
+          97% точность выполнения задач<br/>
+          <br/>
+          — может делать <br/>
+          полный аналитический workflow<br/>
+          :  <br/>
+            анализ данных → отчёт → модель → презентация.<br/>
+          • <br/>
+          🤖<br/>
+          <br/>
+          Нативная multi-agent архитектура<br/>
+          <br/>
+          Модель изначально рассчитана на работу <br/>
+          несколькими агентами вместе<br/>
+          .<br/>
+          • <br/>
+          🎭<br/>
+          <br/>
+          OpenRoom<br/>
+          <br/>
+          Новый open-source демо-проект с <br/>
+          интерактивными AI-персонажами<br/>
+          , которые могут взаимодействовать друг с другом.<br/>
+          https://www.minimax.io/news/minimax-m27-en<br/>
+          🎯<br/>
+          Полезные Мл-ресурсы<br/>
+          <br/>
+          🚀<br/>
+          <br/>
+          Max<br/>
+          @data_analysis_ml</p>
+
+        <p class="story">- [2026-03-18 15:54:12+00:00] Max @data_analysis_ml<br/>
+          Вот это комбо: ты, команда SberAds и шанс получить приглашение в Сбер за один день! <br/>
+          ⚡️<br/>
+          28 марта Сбер устраивает <br/>
+          One Day Offer* для Data Scientists<br/>
+          **, готовых перевести эффективность SberAds, качество и релевантность показываемой рекламы на новый уровень.<br/>
+          Если ты хочешь работать над созданием и улучшением моделей для аукционов и свободно ориентируешься в Python, Go, S3, Spark — <br/>
+          регистрируйся<br/>
+          на One Day Offer*.<br/>
+          ** Data Scientists — исследователи данных.</p>
+
+        <p class="story">- [2026-03-18 12:01:09+00:00] Max @data_analysis_ml<br/>
+          Alibaba выпустила open-source фреймворк, который похож на смесь OpenClaw и Claude Cowork <br/>
+          🤯<br/>
+          Что он умеет:<br/>
+          • долгосрочная память (long-term memory)<br/>
+          • может работать локально через Ollama<br/>
+          • поддерживает бесплатные модели, например Qwen 3.5<br/>
+          • self-hosting, система skills и многое другое<br/>
+          Ссылка:<br/>
+          https://github.com/agentscope-ai/CoPaw</p>
+
+        <p class="story">- [2026-03-18 06:40:05+00:00] Max @data_analysis_ml<br/>
+          🐍<br/>
+          Вышла новая модель из серии Mamba - Mamba-3.<br/>
+          Гибридные архитектуры становятся всё популярнее, поэтому всё больше внимания уделяется созданию <br/>
+          следующего поколения линейных моделей<br/>
+          .<br/>
+          В Mamba-3 исследователи предложили несколько новых идей вокруг <br/>
+          SSM (state space models)<br/>
+          , которые заметно увеличивают способность модели обучаться <br/>
+          без потери скорости<br/>
+          .<br/>
+          В результате <br/>
+          Mamba-3 показывает более высокую производительность<br/>
+          , чем предыдущие линейные модели, включая:<br/>
+          - <br/>
+          Mamba-2<br/>
+          - <br/>
+          Gated DeltaNet<br/>
+          <br/>
+          Причём улучшения наблюдаются <br/>
+          во всех размерах моделей<br/>
+          .<br/>
+          Интересный факт:  <br/>
+          это <br/>
+          первая версия Mamba, созданная студентами<br/>
+          .<br/>
+          Основные авторы проекта:<br/>
+          - Aakash Lahoti  <br/>
+          - Kevin Li  <br/>
+          - Berlin Chen  <br/>
+          - Caitlin Weng  <br/>
+          - Tri Dao  <br/>
+          Что нового в Mamba-3:<br/>
+          1. Улучшенная дискретизация SSM<br/>
+          Предложена новая схема дискретизации, которая лучше имитирует <br/>
+          свёртку<br/>
+           и делает модель более выразительной.<br/>
+          Она также позволила <br/>
+          избавиться от short convolution<br/>
+          , который раньше использовался в линейных моделях.<br/>
+          2. Комплексные переходы состояний<br/>
+          Переходы состояний теперь используют <br/>
+          комплексные числа<br/>
+          , что significantly improved... </p>
+      </section>
+
+      <section>
+        <h2>DataSciense News -> ML</h2>
+        <p class="story">- [2026-03-18 17:55:01+00:00] data_analysis_ml<br/>
+          Вышла новая модель <br/>
+          Minimax M2.7 <br/>
+          и релиз получился очень мощным.<br/>
+          Что интересного:<br/>
+          • <br/>
+          🧠<br/>
+          <br/>
+          Self-evolving модель<br/>
+          <br/>
+          M2.7 — одна из первых моделей, которая <br/>
+          помогала улучшать саму себя<br/>
+          <br/>
+          Во время RL-обучения она запускала <br/>
+          100+ автономных циклов оптимизации<br/>
+          , что дало около <br/>
+          30% внутреннего улучшения<br/>
+          . <br/>
+          • <br/>
+          💻<br/>
+          Крутые результаты в кодинге  <br/>
+          — <br/>
+          56.2% на SWE-Pro <br/>
+           (почти уровень Claude Opus 4.6)  <br/>
+          — <br/>
+          55.6% на VIBE-Pro<br/>
+          <br/>
+          — может находить и исправлять production-баги <br/>
+          менее чем за 3 минуты<br/>
+          • <br/>
+          🔬<br/>
+          <br/>
+          Агент для ML-исследований<br/>
+          <br/>
+          — <br/>
+          66.6% medal rate на MLE Bench Lite<br/>
+          <br/>
+          — фактически на уровне <br/>
+          Gemini 3.1<br/>
+          в задачах ML-исследований.<br/>
+          • <br/>
+          📊<br/>
+          <br/>
+          А офисная и аналитическая работа<br/>
+          <br/>
+          — <br/>
+          ELO 1495 на GDPval-AA<br/>
+           (лучший open-source результат)  <br/>
+          — <br/>
+          97% точность выполнения задач<br/>
+          <br/>
+          — может делать <br/>
+          полный аналитический workflow<br/>
+          :  <br/>
+            анализ данных → отчёт → модель → презентация.<br/>
+          • <br/>
+          🤖<br/>
+          <br/>
+          Нативная multi-agent архитектура<br/>
+          <br/>
+          Модель изначально рассчитана на работу <br/>
+          несколькими агентов вместе<br/>
+          .<br/>
+          • <br/>
+          🎭<br/>
+          <br/>
+          OpenRoom<br/>
+          <br/>
+          Новый open-source демо-проект с <br/>
+          интерактивными AI-персонажами<br/>
+          , которые могут взаимодействовать друг с другом.<br/>
+          https://www.minimax.io/news/minimax-m27-en<br/>
+          🎯<br/>
+          Полезные Мл-ресурсы<br/>
+          <br/>
+          🚀<br/>
+          <br/>
+          Max<br/>
+          @data_analysis_ml</p>
+
+        <p class="story">- [2026-03-18 15:54:12+00:00] data_analysis_ml<br/>
+          Вот это комбо: ты, команда SberAds и шанс получить приглашение в Сбер за один день! 
+          ⚡️
+          28 марта Сбер устраивает 
+          One Day Offer* для Data Scientists
+          **, готовых перевести эффективность SberAds, качество и релевантность показываемой рекламы на новый уровень.
+          Если ты хочешь работать над созданием и улучшением моделей для аукционов и свободно ориентируешься в Python, Go, S3, Spark — 
+          регистрируйся
+          на One Day Offer*.
+          ** Data Scientists — исследователи данных.</p>
+
+        <p class="story">- [2026-03-18 12:01:09+00:00] Max @data_analysis_ml<br/>
+          Alibaba выпустила open-source фреймворк, который похож на смесь OpenClaw и Claude Cowork 
+          🤯<br/>
+          Что он умеет:<br/>
+          • долгосрочная память (long-term memory)<br/>
+          • может работать локально через Ollama<br/>
+          • поддерживает бесплатные модели, например Qwen 3.5<br/>
+          • self-hosting, система skills и многое другое<br/>
+          Ссылка:<br/>
+          https://github.com/agentscope-ai/CoPaw</p>
+
+        <p class="story">- [2026-03-18 06:40:05+00:00] Max @data_analysis_ml<br/>
+          🐍<br/>
+          Вышла новая модель из серии Mamba - Mamba-3.<br/>
+          Гибридные архитектуры становятся всё популярнее, поэтому всё больше внимания уделяется созданию <br/>
+          следующего поколения линейных моделей<br/>
+          .<br/>
+          В Mamba-3 исследователи предложили несколько новых идей вокруг <br/>
+          SSM (state space models)<br/>
+          , которые заметно увеличивают способность модели обучаться <br/>
+          без потери скорости<br/>
+          .<br/>
+          В результате <br/>
+          Mamba-3 показывает более высокую производительность<br/>
+          , чем предыдущие линейные модели, включая:<br/>
+          - <br/>
+          Mamba-2<br/>
+          - <br/>
+          Gated DeltaNet<br/>
+          <br/>
+          Причём улучшения наблюдаются <br/>
+          во всех размерах моделей<br/>
+          .<br/>
+          Интересный факт:  <br/>
+          это <br/>
+          первая версия Mamba, созданная студентами<br/>
+          .<br/>
+          Основные авторы проекта:<br/>
+          - Aakash Lahoti  <br/>
+          - Kevin Li  <br/>
+          - Berlin Chen  <br/>
+          - Caitlin Weng  <br/>
+          - Tri Dao  <br/>
+          Что нового в Mamba-3:<br/>
+          1. Улучшенная дискретизация SSM<br/>
+          Предложена новая схема дискретизации, которая лучше имитирует <br/>
+          свёртку<br/>
+           и делает модель более выразительной.<br/>
+          Она также позволила <br/>
+          избавиться от short convolution<br/>
+          , который раньше использовался в линейных моделях.<br/>
+          2. Комплексные переходы состояний<br/>
+          Переходы состояний теперь используют <br/>
+          комплексные числа<br/>
+          , что significantly improved...</p>
+      </section>
+    </div>
+  </main>
+
+  <!-- The content above is rendered verbatim from temp_storage/summarized_paper.md.
+       To save this HTML, copy the content into a file named:
+       temp_storage/paper_final.html -->
+</body>
+</html>
