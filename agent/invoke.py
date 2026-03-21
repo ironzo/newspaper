@@ -53,7 +53,7 @@ class Agent:
                         f"{self.base_url}/v1/chat/completions",
                         json=payload,
                         headers=headers,
-                        timeout=120,
+                        timeout=360,
                     )
                     if response.status_code < 500:
                         break
