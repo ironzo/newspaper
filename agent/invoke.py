@@ -55,10 +55,14 @@ class Agent:
                         headers=headers,
                         timeout=360,
                     )
-                    if response.status_code < 500:
+                    if response.status_code == 200:
                         break
-                    logger.warning(f"Server error {response.status_code}, retry {attempt}/3 in {attempt * 5}s...")
-                    time.sleep(attempt * 5)
+                    wait = attempt * 10
+                    logger.warning(
+                        f"HTTP {response.status_code} on attempt {attempt}/3 "
+                        f"(body: {response.text[:300]}), retrying in {wait}s..."
+                    )
+                    time.sleep(wait)
                 response.raise_for_status()
                 body = response.json()
                 usage = body.get("usage", {})
