@@ -141,3 +141,106 @@ article a { color: #000; word-break: break-all; text-decoration: underline; }
   .footer { margin: 16px 0 0; }
   a[href]::after { content: none !important; }
 }
+
+/* ── Weather Forecast Section ── */
+.weather-section {
+  padding: 0 40px 24px;
+  border-top: 4px double #000;
+  margin-top: 8px;
+}
+
+.weather-title {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 1em;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-bottom: 1px solid #666;
+  padding: 10px 0 5px;
+  margin: 0 0 10px;
+  color: #000;
+}
+
+.weather-table-wrap { overflow-x: auto; }
+
+.weather-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75em;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.weather-table thead tr {
+  background: #000;
+  color: #fff;
+}
+
+.weather-table th {
+  padding: 6px 8px;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.weather-table th.wt-city {
+  text-align: left;
+  min-width: 90px;
+}
+
+.weather-table th.wt-day { min-width: 100px; }
+
+.wt-date {
+  font-weight: normal;
+  font-size: 0.88em;
+  letter-spacing: 0;
+}
+
+.weather-table td {
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  vertical-align: top;
+}
+
+.weather-table td.wt-city-name {
+  font-weight: bold;
+  background: #f5f5f5;
+  border-right: 2px solid #999;
+  white-space: nowrap;
+}
+
+.wt-cell { text-align: center; }
+
+.wt-cond {
+  font-size: 0.95em;
+  margin-bottom: 3px;
+  white-space: nowrap;
+}
+
+.wt-temp {
+  font-weight: bold;
+  font-size: 0.95em;
+  margin-bottom: 2px;
+}
+
+.wt-meta {
+  color: #444;
+  font-size: 0.88em;
+  margin-bottom: 2px;
+  white-space: nowrap;
+}
+
+.wt-precip {
+  color: #555;
+  font-size: 0.85em;
+}
+
+@media (max-width: 860px) {
+  .weather-section { padding: 0 20px 20px; }
+  .weather-table { font-size: 0.7em; }
+}
+
+@media print {
+  .weather-section { padding: 0 0 20px; border-top: 3px double #000; }
+  .weather-table { font-size: 0.68em; }
+}

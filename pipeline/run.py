@@ -1,7 +1,9 @@
 import os
+import re
 import logging
 from datetime import datetime
 from jobs.layout import apply_layout
+from agent.tools.weather_forecast import build_weather_html
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +14,7 @@ SUMMARIZED_PATH    = os.path.join(ROOT_DIR, "temp_storage", "summarized_paper.md
 HTML_PATH          = os.path.join(ROOT_DIR, "temp_storage", "paper_final.html")
 USER_PREFS_PATH    = os.path.join(ROOT_DIR, "user_preferences.md")
 PROMPTS_DIR        = os.path.join(ROOT_DIR, "prompts")
+CITIES_PATH        = os.path.join(ROOT_DIR, "cities.md")
 
 TODAY = datetime.now().strftime("%A, %B %-d, %Y")  # e.g. Friday, March 20, 2026
 
@@ -47,6 +50,14 @@ def _load_user_preferences() -> str:
         return f"\n\nДодаткові побажання читача:\n{prefs}" if prefs else ""
     except FileNotFoundError:
         return ""
+
+
+def _load_cities() -> list[str]:
+    try:
+        with open(CITIES_PATH, "r", encoding="utf-8") as f:
+            return [line.strip() for line in f if line.strip()]
+    except FileNotFoundError:
+        return []
 
 
 def run(agent) -> None:
@@ -90,6 +101,23 @@ def run(agent) -> None:
     )
 
     html = apply_layout(html, TODAY, agent.cost_usd)
+
+    logger.info("Fetching weather forecast...")
+    cities = _load_cities()
+    if cities:
+        weather_html = build_weather_html(cities)
+        if weather_html:
+            html = re.sub(
+                r'(<footer\s+class="footer">)',
+                weather_html + r'\1',
+                html,
+                count=1,
+            )
+            logger.info("Weather forecast injected.")
+        else:
+            logger.warning("Weather forecast returned empty — skipping.")
+    else:
+        logger.warning("No cities found in cities.md — skipping weather forecast.")
 
     with open(HTML_PATH, "w", encoding="utf-8") as f:
         f.write(html)
