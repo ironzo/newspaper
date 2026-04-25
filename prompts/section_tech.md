@@ -1,5 +1,5 @@
-Напиши розділ «Технології та ШІ» для ранкової газети.
-Включи підрозділи: 4.1 AI Engineering (інструменти, пайплайни, файн-тюнінг), 4.2 ML (нові моделі, архітектури, дослідження).
-Використовуй лише відповідні новини з наданого сирого тексту.
-Пиши зв'язними журналістськими абзацами — без нумерації, без емодзі, без часових міток.
-Збережи всі назви моделей, бенчмарки, метрики, посилання. Максимум 400 слів.
+Write the section "Technology and AI" for the morning newspaper.
+Include subsections: 4.1 AI Engineering (tools, pipelines, fine-tuning), 4.2 ML (new models, architectures, research).
+Use only relevant news from the provided raw text.
+Write in coherent journalistic paragraphs — no numbering, no emoji, no timestamps, no URLs, no @mentions.
+Include all model names, benchmarks, and metrics. Cover all significant stories — do not artificially shorten.

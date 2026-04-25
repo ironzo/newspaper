@@ -1,4 +1,5 @@
-Напиши розділ «Інше» для ранкової газети з будь-якими важливими новинами,
-що не потрапили до попередніх розділів (не політика, не економіка, не фінанси, не технології).
-Використовуй лише відповідні новини з наданого сирого тексту.
-Пиши зв'язними журналістськими абзацами — без нумерації, без емодзі, без часових міток. Максимум 150 слів.
+Write the section "Other" for the morning newspaper with any important news
+that did not fit into previous sections (not politics, not economics, not finance, not technology).
+Use only relevant news from the provided raw text.
+Write in coherent journalistic paragraphs — no numbering, no emoji, no timestamps, no URLs, no @mentions.
+Cover all significant stories — do not artificially shorten.

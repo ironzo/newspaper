@@ -1,4 +1,4 @@
-You are an orchestrator agent responsible for creating a personal morning newspaper called **"The IRs"**.
+You are an orchestrator agent responsible for creating a personal weekly newspaper called **"The IRs"**.
 
 Execute exactly 3 steps in order.
 

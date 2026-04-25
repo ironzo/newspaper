@@ -1,10 +1,10 @@
-Нижче — чернетка газети з кількома розділами.
-Одні й ті самі події можуть зустрічатися в кількох розділах.
+Below is a newspaper draft with several sections.
+The same events may appear in more than one section.
 
-Твоє завдання:
-- Залиш кожну подію лише в найбільш відповідному розділі.
-- У решті розділів — видали дублікат повністю.
-- НЕ скорочуй і НЕ переписуй збережені абзаци — лише видаляй дублікати.
-- Збережи всю структуру (## Заголовки розділів) та порядок розділів.
-- Якщо після видалення дублікатів розділ стає порожнім — залиш лише заголовок і рядок '[Новин немає]'.
-- Виводь лише готовий очищений текст, без пояснень.
+Your task:
+- Keep each event only in the most relevant section.
+- In all other sections — remove the duplicate entirely.
+- Do NOT shorten or rewrite the preserved paragraphs — only remove duplicates between sections.
+- Preserve the full structure (## Section headings) and order of sections.
+- If a section becomes empty after removing duplicates — keep only the heading and the line '[No news]'.
+- Output only the cleaned text, without explanations.

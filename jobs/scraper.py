@@ -1,3 +1,4 @@
+import re
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, timezone
@@ -5,6 +6,13 @@ import time
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def _clean_post(text: str) -> str:
+    text = re.sub(r'https?://\S+', '', text)
+    text = re.sub(r'@\w+', '', text)
+    text = re.sub(r'#\w+', '', text)
+    return text.strip()
 
 def get_24h_posts(channel_username):
     base_url = f"https://t.me/s/{channel_username}"
@@ -47,7 +55,7 @@ def get_24h_posts(channel_username):
                     text = text_element.get_text(separator="\n").strip() if text_element else "[media]"
                     batch_posts.append({
                         "date": post_date,
-                        "text": text
+                        "text": _clean_post(text),
                     })
         
         all_posts.extend(batch_posts)

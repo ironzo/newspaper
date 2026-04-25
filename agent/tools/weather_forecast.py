@@ -70,6 +70,7 @@ def _fetch_forecast(lat: float, lon: float) -> dict:
             ]),
             "hourly": "relative_humidity_2m",
             "forecast_days": 7,
+            "wind_speed_unit": "kmh",
             "timezone": "auto",
         },
         timeout=10,
@@ -104,6 +105,8 @@ def build_weather_html(cities: list[str]) -> str:
         return ""
 
     dates = first["data"]["daily"]["time"]
+    if len(dates) < 7:
+        logger.warning(f"Expected 7 forecast days, got {len(dates)} — table may be incomplete.")
 
     # Column headers
     header_cells = '<th class="wt-city">Місто</th>'
@@ -139,7 +142,7 @@ def build_weather_html(cities: list[str]) -> str:
                     f'<td class="wt-cell">'
                     f'<div class="wt-cond">{cond}</div>'
                     f'<div class="wt-temp">🌡 {t_max}° / {t_min}°</div>'
-                    f'<div class="wt-meta">💧 {humidity}%&nbsp;&nbsp;💨 {wind} км/г</div>'
+                    f'<div class="wt-meta">💧 {humidity}%&nbsp;&nbsp;💨 {wind} км/год</div>'
                     f'<div class="wt-precip">☔ {precip}%</div>'
                     f'</td>'
                 )

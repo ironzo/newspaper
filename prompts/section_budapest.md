@@ -1,6 +1,6 @@
-Напиши розділ «Будапешт» для ранкової газети.
-Включи новини про Будапешт та Угорщину: міські події, угорська національна політика, відносини Угорщина–ЄС, економіка та суспільне життя.
-Використовуй лише відповідні новини з наданого сирого тексту.
-Пиши зв'язними журналістськими абзацами — без нумерації, без емодзі, без часових міток.
-Збережи всі конкретні факти, цифри, імена, організації. Максимум 200 слів.
-Якщо для розділу немає релевантних новин — напиши одним рядком: '[Новин немає]'.
+Write the section "Budapest" for the morning newspaper.
+Include news about Budapest and Hungary: city events, Hungarian national politics, Hungary–EU relations, economy, and social life.
+Use only relevant news from the provided raw text.
+Write in coherent journalistic paragraphs — no numbering, no emoji, no timestamps, no URLs, no @mentions.
+Include all specific facts, figures, names, and organisations. Cover all significant stories — do not artificially shorten.
+If there is no relevant news for this section, write a single line: '[No news]'.

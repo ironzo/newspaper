@@ -87,6 +87,8 @@ html, body {
 /* ── Articles ── */
 article {
   margin-bottom: 20px;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 article h2 {
@@ -147,6 +149,9 @@ article a { color: #000; word-break: break-all; text-decoration: underline; }
   padding: 0 40px 24px;
   border-top: 4px double #000;
   margin-top: 8px;
+  column-span: all;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .weather-title {
@@ -166,6 +171,7 @@ article a { color: #000; word-break: break-all; text-decoration: underline; }
 .weather-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
   font-size: 0.75em;
   font-family: "Times New Roman", Times, serif;
 }
@@ -214,7 +220,8 @@ article a { color: #000; word-break: break-all; text-decoration: underline; }
 .wt-cond {
   font-size: 0.95em;
   margin-bottom: 3px;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .wt-temp {
@@ -241,6 +248,6 @@ article a { color: #000; word-break: break-all; text-decoration: underline; }
 }
 
 @media print {
-  .weather-section { padding: 0 0 20px; border-top: 3px double #000; }
-  .weather-table { font-size: 0.68em; }
+  .weather-section { padding: 0 0 20px; border-top: 3px double #000; page-break-inside: avoid; break-inside: avoid; }
+  .weather-table { font-size: 0.65em; table-layout: fixed; }
 }

@@ -37,7 +37,7 @@ def convert_html_to_pdf_chrome(chrome: str) -> str:
         "--disable-gpu",
         "--no-sandbox",
         "--print-to-pdf-no-header",
-        "--virtual-time-budget=5000",
+        "--virtual-time-budget=8000",
         f"--print-to-pdf={PDF_PATH}",
         f"file://{HTML_PATH}",
     ], check=True, capture_output=True)

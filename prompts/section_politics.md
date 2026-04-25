@@ -1,5 +1,5 @@
-Напиши розділ «Політика та гарячі новини» для ранкової газети.
-Включи три підрозділи: 1.1 Україна, 1.2 США та Європа, 1.3 Інший світ.
-Використовуй лише відповідні новини з наданого сирого тексту.
-Пиши зв'язними журналістськими абзацами — без нумерації, без емодзі, без часових міток.
-Збережи всі конкретні факти, цифри, імена, організації. Максимум 400 слів.
+Write the section "Politics and Breaking News" for the morning newspaper.
+Include three subsections: 1.1 Ukraine, 1.2 USA and Europe, 1.3 Rest of the World.
+Use only relevant news from the provided raw text.
+Write in coherent journalistic paragraphs — no numbering, no emoji, no timestamps, no URLs, no @mentions.
+Include all specific facts, figures, names, and organisations. Cover all significant stories — do not artificially shorten.

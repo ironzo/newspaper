@@ -19,12 +19,12 @@ CITIES_PATH        = os.path.join(ROOT_DIR, "cities.md")
 TODAY = datetime.now().strftime("%A, %B %-d, %Y")  # e.g. Friday, March 20, 2026
 
 SECTIONS = [
-    {"title": "Політика та гарячі новини", "prompt_file": "section_politics.md"},
-    {"title": "Будапешт",                  "prompt_file": "section_budapest.md"},
-    {"title": "Економіка",                 "prompt_file": "section_economics.md"},
-    {"title": "Фінанси",                   "prompt_file": "section_finance.md"},
-    {"title": "Технології та ШІ",          "prompt_file": "section_tech.md"},
-    {"title": "Інше",                      "prompt_file": "section_other.md"},
+    {"title": "Politics and Breaking News", "prompt_file": "section_politics.md"},
+    {"title": "Budapest",                   "prompt_file": "section_budapest.md"},
+    {"title": "Economics",                  "prompt_file": "section_economics.md"},
+    {"title": "Finance",                    "prompt_file": "section_finance.md"},
+    {"title": "Technology and AI",          "prompt_file": "section_tech.md"},
+    {"title": "Other",                      "prompt_file": "section_other.md"},
 ]
 
 
@@ -86,10 +86,33 @@ def run(agent) -> None:
     with open(SUMMARIZED_PATH, "r", encoding="utf-8") as f:
         draft = f.read()
     dedup_prompt = _read_prompt("dedup.md")
-    deduped = agent.invoke(f"{dedup_prompt}\n\n---ЧЕРНЕТКА---\n{draft}", section_system_prompt)
+    deduped = agent.invoke(f"{dedup_prompt}\n\n---DRAFT---\n{draft}", section_system_prompt)
     with open(SUMMARIZED_PATH, "w", encoding="utf-8") as f:
         f.write(deduped)
     logger.info("Deduplication done.")
+
+    logger.info("Running final readability check...")
+    with open(SUMMARIZED_PATH, "r", encoding="utf-8") as f:
+        deduped = f.read()
+    final_check_prompt = _read_prompt("final_check.md")
+    polished = agent.invoke(f"{final_check_prompt}\n\n---DRAFT---\n{deduped}", section_system_prompt)
+    with open(SUMMARIZED_PATH, "w", encoding="utf-8") as f:
+        f.write(polished)
+    logger.info("Readability check done.")
+
+    logger.info("Translating paper to Ukrainian...")
+    with open(SUMMARIZED_PATH, "r", encoding="utf-8") as f:
+        english_draft = f.read()
+    translation_system = (
+        "You are a professional Ukrainian translator. "
+        "Translate the provided English newspaper text to Ukrainian. "
+        "Preserve all markdown formatting (## headings, paragraph breaks). "
+        "Output only the translated text — no explanations, no commentary."
+    )
+    ukrainian_paper = agent.invoke(english_draft, translation_system)
+    with open(SUMMARIZED_PATH, "w", encoding="utf-8") as f:
+        f.write(ukrainian_paper)
+    logger.info("Translation done.")
 
     logger.info("Generating HTML...")
     with open(SUMMARIZED_PATH, "r", encoding="utf-8") as f:

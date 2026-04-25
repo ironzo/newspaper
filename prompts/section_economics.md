@@ -1,4 +1,4 @@
-Напиши розділ «Економіка» для ранкової газети.
-Використовуй лише відповідні економічні новини з наданого сирого тексту.
-Пиши зв'язними журналістськими абзацами — без нумерації, без емодзі, без часових міток.
-Збережи всі конкретні факти, цифри, імена. Максимум 200 слів.
+Write the section "Economics" for the morning newspaper.
+Use only relevant economic news from the provided raw text.
+Write in coherent journalistic paragraphs — no numbering, no emoji, no timestamps, no URLs, no @mentions.
+Include all specific facts, figures, and names. Cover all significant stories — do not artificially shorten.
