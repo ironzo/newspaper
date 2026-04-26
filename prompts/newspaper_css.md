@@ -87,8 +87,6 @@ html, body {
 /* ── Articles ── */
 article {
   margin-bottom: 20px;
-  page-break-inside: avoid;
-  break-inside: avoid;
 }
 
 article h2 {
@@ -234,7 +232,7 @@ article a { color: #000; word-break: break-all; text-decoration: underline; }
   color: #444;
   font-size: 0.88em;
   margin-bottom: 2px;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .wt-precip {
