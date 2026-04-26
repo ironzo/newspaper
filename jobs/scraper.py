@@ -77,19 +77,35 @@ def get_24h_posts(channel_username):
     all_posts = sorted(all_posts, key=lambda x: x['date'], reverse=True)
     return all_posts
 
-def scrape_news():
-    all_posts = []
+def _load_channels() -> list[str]:
     with open(os.path.join(BASE_DIR, "telegram_channels.md"), "r", encoding="utf-8") as f:
-        channels = f.readlines()
-    for channel in channels:
-        channel_posts = f"## Channel Name: {channel}\n"
-        channel = channel.strip()
-        if channel:
+        return [line.strip() for line in f if line.strip() and not line.startswith("#")]
+
+
+def _format_posts(channel: str, posts: list[dict]) -> str:
+    block = f"## Channel Name: {channel}\n"
+    for p in sorted(posts, key=lambda x: x["date"], reverse=True):
+        block += f"### [{p['date']}] {p['text']}\n"
+        print(f"[{p['date']}] {p['text'][:100]}...")
+    return block
+
+
+def scrape_news():
+    channels = _load_channels()
+    all_posts = []
+
+    api_id = os.getenv("TELEGRAM_API_ID")
+    if api_id and api_id != "0":
+        from jobs.telegram_client import scrape_channels
+        channel_posts_map = scrape_channels(channels)
+        for ch, posts in channel_posts_map.items():
+            print(f"Found {len(posts)} posts for {ch}")
+            all_posts.append(_format_posts(ch, posts))
+    else:
+        for channel in channels:
             posts = get_24h_posts(channel)
             print(f"Found {len(posts)} posts for {channel}")
-            for p in posts:
-                channel_posts += f"### [{p['date']}] {p['text']}\n"
-                print(f"[{p['date']}] {p['text'][:100]}...")
-        all_posts.append(channel_posts)
+            all_posts.append(_format_posts(channel, posts))
+
     with open(os.path.join(BASE_DIR, "temp_storage", "raw_news.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(all_posts)) 

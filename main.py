@@ -2,6 +2,7 @@ import os
 import logging
 from datetime import datetime
 from agent.invoke import Agent
+from jobs.archiver import save_to_archive
 from jobs.cleaner import clean_temp_files
 from jobs.layout import apply_layout
 from jobs.printer import print_paper
@@ -82,3 +83,6 @@ if __name__ == "__main__":
 
     # Print paper
     print_paper()
+
+    # Archive finished paper
+    save_to_archive()

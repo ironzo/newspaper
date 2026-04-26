@@ -2,6 +2,7 @@ import os
 import re
 import logging
 from datetime import datetime
+from jobs.archiver import load_recent_summaries
 from jobs.layout import apply_layout
 from agent.tools.weather_forecast import build_weather_html
 
@@ -63,7 +64,14 @@ def _load_cities() -> list[str]:
 def run(agent) -> None:
     user_prefs = _load_user_preferences()
 
-    section_system_prompt = _read_prompt("section_system.md") + user_prefs
+    archive_summaries = load_recent_summaries(n=3)
+    archive_block = (
+        "\n\n---PREVIOUS EDITIONS (for reference only)---\n"
+        + archive_summaries
+        + "\n---END OF PREVIOUS EDITIONS---\n"
+    ) if archive_summaries else ""
+
+    section_system_prompt = _read_prompt("section_system.md") + user_prefs + archive_block
     html_system_prompt = _compose_html_system_prompt(user_prefs)
 
     with open(RAW_NEWS_PATH, "r", encoding="utf-8") as f:
