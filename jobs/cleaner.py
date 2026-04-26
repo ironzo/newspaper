@@ -16,6 +16,12 @@ def clean_temp_files():
         filepath = os.path.join(temp_dir, filename)
         if os.path.isfile(filepath):
             os.remove(filepath)
+    images_dir = os.path.join(temp_dir, "images")
+    if os.path.isdir(images_dir):
+        for filename in os.listdir(images_dir):
+            filepath = os.path.join(images_dir, filename)
+            if os.path.isfile(filepath):
+                os.remove(filepath)
     for filename in PLACEHOLDER_FILES:
         open(os.path.join(temp_dir, filename), "w").close()
 

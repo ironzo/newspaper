@@ -142,6 +142,26 @@ article a { color: #000; word-break: break-all; text-decoration: underline; }
   a[href]::after { content: none !important; }
 }
 
+/* ── Section Photos ── */
+.section-photo {
+  float: right;
+  max-width: 42%;
+  margin: 0 0 0.8em 1.2em;
+  break-inside: avoid;
+}
+.section-photo img {
+  width: 100%;
+  display: block;
+  border: 1px solid #ccc;
+}
+.section-photo figcaption {
+  font-size: 0.72em;
+  color: #555;
+  font-style: italic;
+  margin-top: 0.3em;
+  line-height: 1.3;
+}
+
 /* ── Weather Forecast Section ── */
 .weather-section {
   padding: 0 40px 24px;

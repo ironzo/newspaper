@@ -15,7 +15,7 @@ def _load_css() -> str:
         return f.read().strip()
 
 
-def apply_layout(html: str, today: str, cost_usd: float = 0.0) -> str:
+def apply_layout(html: str, today: str, cost_usd: float = 0.0, total_tokens: int = 0) -> str:
     """
     1. Injects fresh CSS from newspaper_css.md.
     2. Inserts a price-bar element into the masthead.
@@ -30,8 +30,10 @@ def apply_layout(html: str, today: str, cost_usd: float = 0.0) -> str:
     )
 
     # ── 2. Inject price bar into masthead ──────────────────────────
+    token_str = f"{total_tokens:,} tokens" if total_tokens else ""
     price_str = f"${cost_usd:.4f}"
-    price_html = f'<div class="price-bar">Price: {price_str}</div>\n    '
+    label = f"Price: {price_str} · {token_str}" if token_str else f"Price: {price_str}"
+    price_html = f'<div class="price-bar">{label}</div>\n    '
     html = re.sub(
         r'(</header>)',
         price_html + r'\1',

@@ -4,7 +4,11 @@
       "WebSearch",
       "Bash(venv/bin/python3 *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "WebFetch(domain:developers.openai.com)",
+      "WebFetch(domain:platform.openai.com)",
+      "WebFetch(domain:openai.com)",
+      "Bash(python3 *)"
     ]
   }
 }

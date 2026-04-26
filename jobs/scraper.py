@@ -86,6 +86,8 @@ def _format_posts(channel: str, posts: list[dict]) -> str:
     block = f"## Channel Name: {channel}\n"
     for p in sorted(posts, key=lambda x: x["date"], reverse=True):
         block += f"### [{p['date']}] {p['text']}\n"
+        if p.get("image_path"):
+            block += f"[IMAGE: {p['image_path']}]\n"
         print(f"[{p['date']}] {p['text'][:100]}...")
     return block
 

@@ -1,9 +1,12 @@
 import os
 import re
+import json
+import base64
 import logging
 from datetime import datetime
 from jobs.archiver import load_recent_summaries
 from jobs.layout import apply_layout
+from jobs.image_selector import select_images
 from agent.tools.weather_forecast import build_weather_html
 
 logger = logging.getLogger(__name__)
@@ -61,6 +64,108 @@ def _load_cities() -> list[str]:
         return []
 
 
+def _split_into_items(raw_news: str) -> list[tuple[int, str, str | None]]:
+    """Split raw news into numbered items (id, text, image_path). IMAGE tags are consumed."""
+    IMAGE_TAG = re.compile(r'^\[IMAGE:\s*(.+?)\]\s*$')
+    lines = raw_news.split('\n')
+    items: list[tuple[int, str, str | None]] = []
+    current_channel = ""
+    current_item_lines: list[str] = []
+    current_image: str | None = None
+    item_id = 0
+
+    def flush():
+        nonlocal item_id, current_image
+        text = '\n'.join(current_item_lines).strip()
+        if text:
+            items.append((item_id, f"{current_channel}\n{text}", current_image))
+            item_id += 1
+        current_image = None
+
+    for line in lines:
+        if line.startswith('## Channel Name:'):
+            flush()
+            current_item_lines = []
+            current_channel = line
+        elif line.startswith('### ['):
+            flush()
+            current_item_lines = [line]
+        else:
+            if current_item_lines:
+                m = IMAGE_TAG.match(line)
+                if m:
+                    current_image = m.group(1).strip()
+                else:
+                    current_item_lines.append(line)
+
+    flush()
+    return items
+
+
+def _route_news(
+    agent, raw_news: str, section_titles: list[str]
+) -> tuple[dict[str, str], list[tuple[int, str, str | None]], dict[str, list[int]]]:
+    """Assign each raw news item to exactly one section.
+    Returns (section_news, items, section_ids).
+    """
+    items = _split_into_items(raw_news)
+    if not items:
+        return {title: "" for title in section_titles}, items, {title: [] for title in section_titles}
+
+    numbered = "\n\n".join(f"[{i}] {text}" for i, text, _ in items)
+    router_prompt = _read_prompt("router.md")
+    router_system = "You are a news router. Output valid JSON only, no markdown, no explanation."
+
+    raw_result = agent.invoke(f"{router_prompt}\n\n---ITEMS---\n{numbered}", router_system)
+
+    result = raw_result.strip()
+    if result.startswith("```"):
+        result = re.sub(r'^```[a-z]*\n?', '', result)
+        result = re.sub(r'\n?```$', '', result)
+
+    try:
+        assignments = json.loads(result)
+    except json.JSONDecodeError:
+        logger.warning("Router returned invalid JSON — falling back to full news for all sections.")
+        return {title: raw_news for title in section_titles}, items, {title: [] for title in section_titles}
+
+    item_lookup = {i: (text, img) for i, text, img in items}
+    seen_ids: set[int] = set()
+    section_news: dict[str, str] = {}
+    section_ids: dict[str, list[int]] = {}
+
+    for title in section_titles:
+        ids = assignments.get(title, [])
+        unique_ids = [i for i in ids if i in item_lookup and i not in seen_ids]
+        seen_ids.update(unique_ids)
+        section_news[title] = "\n\n".join(item_lookup[i][0] for i in unique_ids)
+        section_ids[title] = unique_ids
+
+    return section_news, items, section_ids
+
+
+def _inject_images(html: str, selected: list[dict]) -> str:
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(html, "html.parser")
+    for img_info in selected:
+        section_div = soup.find(attrs={"data-section": img_info["section"]})
+        if not section_div:
+            continue
+        with open(img_info["image_path"], "rb") as f:
+            b64 = base64.b64encode(f.read()).decode()
+        ext = os.path.splitext(img_info["image_path"])[1].lstrip(".") or "jpeg"
+        caption = img_info["caption"].replace('"', '&quot;')
+        figure_html = (
+            f'<figure class="section-photo">'
+            f'<img src="data:image/{ext};base64,{b64}" alt="{caption}"/>'
+            f'<figcaption>{img_info["caption"]}</figcaption>'
+            f'</figure>'
+        )
+        figure = BeautifulSoup(figure_html, "html.parser")
+        section_div.insert(1, figure)
+    return str(soup)
+
+
 def run(agent) -> None:
     user_prefs = _load_user_preferences()
 
@@ -79,10 +184,18 @@ def run(agent) -> None:
 
     open(SUMMARIZED_PATH, "w", encoding="utf-8").close()
 
+    logger.info("Routing news items to sections...")
+    section_news, items, section_ids = _route_news(agent, raw_news, [s["title"] for s in SECTIONS])
+
     for section in SECTIONS:
+        assigned = section_news.get(section["title"], "").strip()
+        if not assigned:
+            logger.info(f"Skipping section '{section['title']}' — no items assigned.")
+            continue
+
         logger.info(f"Writing section: {section['title']}")
         section_prompt = _read_prompt(section["prompt_file"])
-        prompt = f"{section_prompt}\n\n---СИРІ НОВИНИ---\n{raw_news}"
+        prompt = f"{section_prompt}\n\n---RAW NEWS---\n{assigned}"
         content = agent.invoke(prompt, section_system_prompt)
 
         with open(SUMMARIZED_PATH, "a", encoding="utf-8") as f:
@@ -131,7 +244,17 @@ def run(agent) -> None:
         html_system_prompt,
     )
 
-    html = apply_layout(html, TODAY, agent.cost_usd)
+    logger.info("Selecting images...")
+    selected_images, vision_cost, vision_tokens = select_images(items, section_ids)
+    if selected_images:
+        logger.info(f"Injecting {len(selected_images)} image(s) into HTML.")
+        html = _inject_images(html, selected_images)
+    else:
+        logger.info("No images selected.")
+
+    total_tokens = agent.total_prompt_tokens + agent.total_completion_tokens + vision_tokens
+    total_cost = agent.cost_usd + vision_cost
+    html = apply_layout(html, TODAY, total_cost, total_tokens)
 
     logger.info("Fetching weather forecast...")
     cities = _load_cities()
@@ -154,3 +277,4 @@ def run(agent) -> None:
         f.write(html)
 
     logger.info(f"Done. HTML saved to {HTML_PATH}")
+    logger.info(f"Total cost: ${total_cost:.4f} ({total_tokens:,} tokens)")
